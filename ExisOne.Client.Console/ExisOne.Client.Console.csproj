@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    
+    <!-- Project Metadata -->
+    <AssemblyName>ExisOne.Client.Console</AssemblyName>
+    <RootNamespace>ExisOne.Client.Console</RootNamespace>
+    <Version>1.0.0</Version>
+    <Authors>Exis, LLC</Authors>
+    <Company>Exis, LLC</Company>
+    <Product>ExisOne Client SDK Demo</Product>
+    <Description>Demo console application showcasing all features of the ExisOne.Client NuGet package for software licensing and activation.</Description>
+    <Copyright>Copyright © 2025 Exis, LLC</Copyright>
+    
+    <!-- Repository -->
+    <RepositoryUrl>https://github.com/ExisLLC/ExisOne.Client.Console</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    
+    <!-- Misc -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ExisOne.Client" Version="0.5.0" />
+  </ItemGroup>
+
+</Project>
