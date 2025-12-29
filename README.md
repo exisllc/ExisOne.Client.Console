@@ -73,7 +73,7 @@ This demo showcases all ExisOne.Client SDK capabilities:
 ### 1. Install the NuGet Package
 
 ```bash
-dotnet add package ExisOne.Client --version 0.5.0
+dotnet add package ExisOne.Client --version 0.6.0
 ```
 
 ### 2. Initialize the Client
@@ -223,6 +223,48 @@ if (serverVer != null && serverVer != "1.0.0")
 }
 ```
 
+## ⏱️ Trial / Initial Mode Expiration (v0.6.0+)
+
+Starting in v0.6.0, the API **always returns an expiration date** during validation, even for trial users or invalid licenses. This enables consistent UI messaging about when trials expire.
+
+### How Expiration is Calculated
+
+| Scenario | Expiration Date |
+|----------|-----------------|
+| **First visit** (new hardware ID + valid product) | `NOW + TrialDays` |
+| **Returning visit** (existing device record) | Stored expiration from device record |
+| **Invalid/blank license key** | Device's creation date + TrialDays |
+| **Activated license** | License expiration date |
+| **Product not found** | Current date |
+
+### Example: Trial Mode
+
+```csharp
+// First time user with no activation key (trial mode)
+var (isValid, status, expirationDate, features, _, _) = 
+    await client.ValidateAsync(hardwareId, "MyProduct", activationKey: null);
+
+// status = "trial" (if within trial period) or "expired" (if trial ended)
+// expirationDate = CreatedAt + TrialDays (always set, never null)
+
+if (status == "trial")
+{
+    var daysLeft = (expirationDate.Value - DateTime.UtcNow).Days;
+    Console.WriteLine($"Trial mode: {daysLeft} days remaining");
+}
+else if (status == "expired")
+{
+    Console.WriteLine($"Trial expired on {expirationDate:d}. Please purchase a license.");
+}
+```
+
+### Key Points
+
+- **First contact creates a record**: When a hardware ID first contacts the API with a valid product, a device record is created with `CreatedAt = NOW` and `ExpirationDate = NOW + TrialDays`
+- **Consistent dates**: The same hardware ID will always get the same expiration date (based on first contact), preventing trial resets
+- **Override capability**: Administrators can manually adjust expiration dates via the License Activity page
+- **Deactivation clears records**: When a license is deactivated, the device record's activation key and expiration are cleared, allowing trial mode to resume if applicable
+
 ## 📚 Documentation
 
 - [SDK Documentation](https://www.exisone.com/docs-sdk.html)
@@ -244,7 +286,13 @@ if (serverVer != null && serverVer != "1.0.0")
 
 ## 📝 Changelog
 
-### v0.5.0 (Current)
+### v0.6.0 (Current)
+- **Consistent Expiration Dates**: `expirationDate` is now always returned during validation, even for invalid/trial licenses
+- **Trial Expiration Calculation**: For first-time visits with a valid product, expiration is calculated as `CreatedAt + TrialDays`
+- **Device Tracking**: Device records are now created on first contact for analytics and trial management
+- **Deactivation Fix**: Device records are properly cleared on license deactivation
+
+### v0.5.0
 - **Version Enforcement**: Pass client version during activation/validation
 - **ActivationResult**: Structured return type with error codes
 - **Server Version Info**: All responses include `serverVersion` and `minimumRequiredVersion`
