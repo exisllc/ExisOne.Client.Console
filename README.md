@@ -73,7 +73,7 @@ This demo showcases all ExisOne.Client SDK capabilities:
 ### 1. Install the NuGet Package
 
 ```bash
-dotnet add package ExisOne.Client --version 0.6.0
+dotnet add package ExisOne.Client --version 0.7.0
 ```
 
 ### 2. Initialize the Client
@@ -270,6 +270,7 @@ else if (status == "expired")
 - [SDK Documentation](https://www.exisone.com/docs-sdk.html)
 - [API Reference](https://www.exisone.com/docs.html)
 - [AI Integration Prompt](https://www.exisone.com/docs-sdk-ai.html)
+- [MCP Server for Claude](https://www.exisone.com/docs-ai-mcp.html) - Manage licenses with AI
 - [Stripe Integration](https://www.exisone.com/stripe-docs.html)
 - [PayPal Integration](https://www.exisone.com/paypal-docs.html)
 
@@ -286,7 +287,11 @@ else if (status == "expired")
 
 ## 📝 Changelog
 
-### v0.6.0 (Current)
+### v0.7.0 (Current)
+- **MCP Server Support**: New AI-powered license management via Claude Desktop MCP integration
+- **Documentation Updates**: Improved setup instructions and troubleshooting guides
+
+### v0.6.0
 - **Consistent Expiration Dates**: `expirationDate` is now always returned during validation, even for invalid/trial licenses
 - **Trial Expiration Calculation**: For first-time visits with a valid product, expiration is calculated as `CreatedAt + TrialDays`
 - **Device Tracking**: Device records are now created on first contact for analytics and trial management
